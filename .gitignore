@@ -1,0 +1,5 @@
+*.fsproj
+*.fs
+.idea
+bin
+obj
