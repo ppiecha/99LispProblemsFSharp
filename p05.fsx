@@ -14,7 +14,7 @@ if reverse [ 1; 2; 3; 4; 5; 6 ]
     failwith "test failed"
 
 (*
-    Palindrome
+    P06 Palindrome
 *)
 
 let palindrome list = list = reverse list
