@@ -34,19 +34,30 @@ let rec merge list1 list2 key =
 merge [5] [2; 3] (<)
 merge [5; 3; 2; 1] [4; 1] (>)
 
-let rec sort (list : List<'a>) (key: ('a -> 'a -> bool)) =
+let rec sortMerge (list : List<'a>) (key: ('a -> 'a -> bool)) =
     match list with
     | [] -> []
     | [x] -> [x]
-    | list -> let list1, list2 = divide list in merge (sort list1 key) (sort list2 key) key
+    | list -> let list1, list2 = divide list in merge (sortMerge list1 key) (sortMerge list2 key) key
     
-sort [3; 2] (<)
-sort [2; 3; 1] (<)
-sort [2; 3; 1; 2; 5; 2] (<)
-sort [3; 2; 3; 2; 4; 2; 1] (<)
-sort ['b'; 'a'; 'c'] (<)
+sortMerge [3; 2] (<)
+sortMerge [2; 3; 1] (<)
+sortMerge [2; 3; 1; 2; 5; 2] (<)
+sortMerge [3; 2; 3; 2; 4; 2; 1] (<)
+sortMerge ['b'; 'a'; 'c'] (<)
 
-let lsort list = sort list (fun l1 l2 -> List.length l1 < List.length l2)
+let lsort list = sortMerge list (fun l1 l2 -> List.length l1 < List.length l2)
 
 lsort [['a'; 'b'; 'c']; ['d'; 'e']; ['f'; 'g'; 'h']; ['d'; 'e']; ['i'; 'j'; 'k'; 'l']; ['m'; 'n']; ['o']]
+
+let lsort' list = list |> List.sortBy List.length
+
+lsort' [['a'; 'b'; 'c']; ['d'; 'e']; ['f'; 'g'; 'h']; ['d'; 'e']; ['i'; 'j'; 'k'; 'l']; ['m'; 'n']; ['o']]
+
+let lfsort list =
+    list
+    |> List.groupBy (List.length)
+    |> List.sortBy (snd >> List.length)
+    |> List.collect (snd)
     
+lfsort [['a'; 'b'; 'c']; ['d'; 'e']; ['f'; 'g'; 'h']; ['d'; 'e']; ['i'; 'j'; 'k'; 'l']; ['m'; 'n']; ['o']]    
