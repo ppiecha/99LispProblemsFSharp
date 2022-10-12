@@ -25,9 +25,10 @@ let primesInRange n m =
 
 let goldbach n =
     if n <= 2 then failwith $"Number must be greater than 2"
-    let primes = primesInRange 2 (n - 1)
+    let primes = primesInRange 1 (n - 1)
     primes |> List.find (fun x -> List.exists (fun y -> (n - x) = y) primes) |> fun x -> x, n - x
      
 goldbach 28
 goldbach 30
 goldbach 2
+goldbach 4

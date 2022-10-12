@@ -26,8 +26,19 @@ let primesInRange n m =
 
 let goldbach n =
     if n <= 2 then failwith $"Number must be greater than 2"
-    let primes = primesInRange 2 (n - 1)
+    let primes = primesInRange 1 (n - 1)
     primes |> List.find (fun x -> List.exists (fun y -> (n - x) = y) primes) |> fun x -> x, n - x
+    
+goldbach 4    
+    
+// let goldbach' n =
+//     if n <= 2 then failwith $"Number must be greater than 2"
+//     let primes = primesInRange 2 (n - 1)
+//     primes
+//     |> List.tryFind (fun x -> List.exists (fun y -> (n - x) = y) primes)
+//     |> function
+//        | None -> None, None
+//        | Some x -> Some x, Some (n - x)    
     
 let goldbachList n m =
     [n .. m]
@@ -36,3 +47,26 @@ let goldbachList n m =
     |> List.iter (fun (n, (p, q)) -> printfn $"{n} = {p} + {q}")
     
 goldbachList 10 20
+goldbachList 1 20
+
+(*
+In most cases, if an even number is written as the sum of two prime numbers, one of them is very small. 
+Very rarely, the primes are both bigger than say 50. 
+Try to find out how many such cases there are in the range 2..3000.
+
+Example (for a print limit of 50):
+* (goldbach-list 1 2000 50)
+992 = 73 + 919
+1382 = 61 + 1321
+1856 = 67 + 1789
+1928 = 61 + 1867
+*)
+
+let goldbachListLimit n m limit =
+    [n .. m]
+    |> List.filter (fun x -> x > 2 && x % 2 = 0)
+    |> List.map (fun x -> x, goldbach x)
+    |> List.filter (fun (_, (p, q)) -> p > limit && q > limit)
+    |> List.iter (fun (n, (p, q)) -> printfn $"{n} = {p} + {q}")
+    
+goldbachListLimit 10 2000 50   
