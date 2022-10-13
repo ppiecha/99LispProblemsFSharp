@@ -10,7 +10,5 @@ let count list =
 
     loop list 0
 
-printf $"count {count [ 1; 2; 3; 4; 5 ]}\n"
-
 if count [ 1; 2; 3; 4; 5 ] <> 5 then
     failwith "test failed"
